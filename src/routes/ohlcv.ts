@@ -12,7 +12,30 @@ export const createOhlcvPlugin = (adapters: Record<string, IExchangeApi>) => {
 			"/ohlcv",
 			async ({ body, set }) => {
 				try {
-					const exchanges = body.exchanges.map((e) => e.trim().toLowerCase());
+					let exchanges: string[];
+
+					if (body.exchanges.length === 1 && body.exchanges[0] === "all") {
+						exchanges = [
+							"binance",
+							"okx",
+							"bybit",
+							"kucoin",
+							"bitget",
+							"mexc",
+							"gateio",
+							"bitmex",
+							"htx",
+							"hyperliquid",
+							"xt",
+							"bingx",
+							"coinex",
+							"bitmart",
+							"blofin",
+						];
+					} else {
+						exchanges = body.exchanges.map((e) => e.trim().toLowerCase());
+					}
+
 					let startTime: number;
 
 					if (
