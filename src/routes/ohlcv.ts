@@ -6,11 +6,9 @@ import {
 	OhlcvRequestSchema,
 	OhlcvResponseSchema,
 } from "../schemas/ohlcv";
-import type { IExchangeAdapter } from "../services/AggregationService";
+import type { IExchangeApi } from "../types";
 
-export const createOhlcvPlugin = (
-	adapters: Record<string, IExchangeAdapter>,
-) => {
+export const createOhlcvPlugin = (adapters: Record<string, IExchangeApi>) => {
 	const aggregationService = new AggregationService(adapters);
 
 	return new Elysia({ prefix: "/api" })
