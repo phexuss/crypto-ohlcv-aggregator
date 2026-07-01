@@ -1,11 +1,7 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 import { AggregationService } from "../services/AggregationService";
 import { timeToMs } from "../utils/time";
-import {
-	ErrorResponseSchema,
-	OhlcvRequestSchema,
-	OhlcvResponseSchema,
-} from "../schemas/ohlcv";
+import { ErrorResponseSchema, OhlcvRequestSchema } from "../schemas/ohlcv";
 import type { IExchangeApi } from "../types";
 
 export const createOhlcvPlugin = (adapters: Record<string, IExchangeApi>) => {
@@ -52,7 +48,7 @@ export const createOhlcvPlugin = (adapters: Record<string, IExchangeApi>) => {
 						startTime,
 					);
 
-					return { data };
+					return data;
 				} catch (err) {
 					const error = err as Error;
 					console.error("Error in getOhlcv:", {
@@ -74,7 +70,6 @@ export const createOhlcvPlugin = (adapters: Record<string, IExchangeApi>) => {
 			{
 				body: OhlcvRequestSchema,
 				response: {
-					200: OhlcvResponseSchema,
 					400: ErrorResponseSchema,
 					500: ErrorResponseSchema,
 				},
