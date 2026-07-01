@@ -5,6 +5,7 @@
     "": {
       "name": "crypto-ohlcv-aggregator",
       "dependencies": {
+        "@sinclair/typebox": "^0.34.49",
         "elysia": "latest",
       },
       "devDependencies": {
