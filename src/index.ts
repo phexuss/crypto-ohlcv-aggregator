@@ -1,4 +1,6 @@
 import { Elysia } from "elysia";
+import logger from "logixlysia";
+import { consola } from "consola";
 import { config } from "./config";
 import { createOhlcvPlugin } from "./routes/ohlcv";
 import {
@@ -38,9 +40,11 @@ const adapters = {
 };
 
 const app = new Elysia()
+	.use(logger())
 	.use(createOhlcvPlugin(adapters))
 	.listen(config.port);
 
-console.log(
-	`🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
-);
+consola.ready({
+	message: `🦊 Elysia is running at ${app.server?.hostname}:${app.server?.port}`,
+	badge: true,
+});

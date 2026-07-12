@@ -1,6 +1,7 @@
 import type { IAggregatedDataPoint, IExchangeApi, IOhlcvData } from "../types";
 import { timeToMs } from "../utils/time";
 import { DataFillingService } from "./DataFillingService";
+import { consola } from "consola";
 
 export class AggregationService {
 	private adapters: Record<string, IExchangeApi> = {};
@@ -31,7 +32,7 @@ export class AggregationService {
 					const filledData = DataFillingService.fillGaps(rawData, intervalMs);
 					return { exchange, data: filledData };
 				} catch (error) {
-					console.error(`Error fetching data from ${exchange}:`, error);
+					consola.error(`Error fetching data from ${exchange}:`, error);
 					return { exchange, data: [] as IOhlcvData[] };
 				}
 			}),

@@ -1,5 +1,6 @@
 import { Value } from "@sinclair/typebox/value";
 import { t } from "elysia";
+import { consola } from "consola";
 
 const envSchema = t.Object(
 	{
@@ -70,9 +71,9 @@ const isValid = Value.Check(envSchema, Bun.env);
 
 if (!isValid) {
 	const errors = [...Value.Errors(envSchema, Bun.env)];
-	console.error("❌ Config validation error(s):");
+	consola.error("Config validation error(s):");
 	for (const error of errors) {
-		console.error(` - ${error.path}: ${error.message}`);
+		consola.error(` - ${error.path}: ${error.message}`);
 	}
 	process.exit(1);
 }

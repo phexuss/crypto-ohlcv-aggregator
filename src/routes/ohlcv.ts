@@ -1,4 +1,5 @@
 import { Elysia } from "elysia";
+import { consola } from "consola";
 import { AggregationService } from "../services/AggregationService";
 import { timeToMs } from "../utils/time";
 import { ErrorResponseSchema, OhlcvRequestSchema } from "../schemas/ohlcv";
@@ -74,7 +75,7 @@ export const createOhlcvPlugin = (adapters: Record<string, IExchangeApi>) => {
 					return data;
 				} catch (err) {
 					const error = err as Error;
-					console.error("Error in getOhlcv:", {
+					consola.error("Error in getOhlcv:", {
 						message: error.message,
 						stack: error.stack,
 						exchanges: body.exchanges,

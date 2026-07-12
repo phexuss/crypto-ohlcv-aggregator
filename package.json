@@ -7,7 +7,9 @@
   },
   "dependencies": {
     "@sinclair/typebox": "^0.34.49",
-    "elysia": "latest"
+    "consola": "^3.4.2",
+    "elysia": "latest",
+    "logixlysia": "^6.6.0"
   },
   "devDependencies": {
     "bun-types": "latest"

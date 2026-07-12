@@ -1,4 +1,5 @@
 import type { IOhlcvData } from "../types";
+import { consola } from "consola";
 
 export abstract class BaseExchangeApi {
 	protected baseUrl: string;
@@ -27,7 +28,7 @@ export abstract class BaseExchangeApi {
 			return await response.json();
 		} catch (error) {
 			const err = error as Error;
-			console.error(`API Request Failed for ${url}:`, err.message);
+			consola.error(`API Request Failed for ${url}:`, err.message);
 			throw error;
 		}
 	}
