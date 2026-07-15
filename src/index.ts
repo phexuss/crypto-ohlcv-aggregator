@@ -1,25 +1,26 @@
+import { swagger } from "@elysiajs/swagger";
+import { consola } from "consola";
 import { Elysia } from "elysia";
 import logger from "logixlysia";
-import { consola } from "consola";
 import { config } from "./config";
-import { createOhlcvPlugin } from "./routes/ohlcv";
 import {
 	BinanceApi,
-	OkxApi,
-	BybitApi,
-	KuCoinApi,
+	BingxApi,
 	BitgetApi,
-	MexcApi,
-	GateioApi,
+	BitmartApi,
 	BitmexApi,
+	BlofinApi,
+	BybitApi,
+	CoinexApi,
+	GateioApi,
 	HtxApi,
 	HyperliquidApi,
+	KuCoinApi,
+	MexcApi,
+	OkxApi,
 	XtApi,
-	BingxApi,
-	CoinexApi,
-	BitmartApi,
-	BlofinApi,
 } from "./exchanges";
+import { createOhlcvPlugin } from "./routes/ohlcv";
 
 const adapters = {
 	binance: new BinanceApi(),
@@ -41,6 +42,16 @@ const adapters = {
 
 const app = new Elysia()
 	.use(logger())
+	.use(
+		swagger({
+			documentation: {
+				info: {
+					title: "Crypto OHLCV Aggregator API",
+					version: "1.0.0",
+				},
+			},
+		}),
+	)
 	.use(createOhlcvPlugin(adapters))
 	.listen(config.port);
 
