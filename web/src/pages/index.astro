@@ -1,17 +1,50 @@
 ---
-
+import Layout from "../layouts/Layout.astro";
+import Header from "../components/Header.astro";
+import Sidebar from "../components/Sidebar.astro";
+import ChartArea from "../components/ChartArea.astro";
+import DataTable from "../components/DataTable.astro";
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout title="Crypto OHLCV Aggregator — Dashboard">
+	<Header />
+
+	<main class="dashboard">
+		<Sidebar />
+
+		<div class="main-content">
+			<ChartArea />
+			<DataTable />
+		</div>
+	</main>
+
+	<!-- Load app controller -->
+	<script>
+		import "../scripts/app.ts";
+	</script>
+</Layout>
+
+<style>
+	.dashboard {
+		display: flex;
+		min-height: 100vh;
+		padding-top: var(--header-height);
+		position: relative;
+	}
+
+	.main-content {
+		flex: 1;
+		margin-left: var(--sidebar-width);
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		min-width: 0;
+	}
+
+	@media (max-width: 768px) {
+		.main-content {
+			margin-left: 0;
+			padding: var(--space-3);
+		}
+	}
+</style>
