@@ -50,7 +50,7 @@ Integrates with 15 major cryptocurrency futures exchanges:
 ## Architecture Overview
 
 ```
-src/
+src/                             # Backend (ElysiaJS API)
 ├── config/
 │   └── index.ts              # Environment validation with TypeBox
 ├── exchanges/
@@ -71,6 +71,23 @@ src/
 ├── utils/
 │   └── time.ts               # Duration parsing utilities
 └── index.ts                  # Application entry point
+
+web/                             # Frontend (Astro.js)
+├── src/
+│   ├── layouts/
+│   │   └── Layout.astro      # Base layout with design system
+│   ├── components/
+│   │   ├── Header.astro      # Header with health status indicator
+│   │   ├── Sidebar.astro     # Exchange selector & query controls
+│   │   ├── ChartArea.astro   # Chart container with Grid/Overlay toggle
+│   │   └── DataTable.astro   # Collapsible sortable data table
+│   ├── scripts/
+│   │   ├── app.ts            # Main app controller & API integration
+│   │   ├── chart.ts          # TradingView Lightweight Charts manager
+│   │   └── table.ts          # Table rendering & sorting logic
+│   └── pages/
+│       └── index.astro       # Dashboard page
+└── astro.config.mjs          # Astro config (builds to ../public/)
 ```
 
 ### Design Patterns
@@ -94,8 +111,11 @@ src/
 git clone https://github.com/phexuss/crypto-ohlcv-aggregator.git
 cd crypto-ohlcv-aggregator
 
-# Install dependencies
+# Install backend dependencies
 bun install
+
+# Install frontend dependencies
+cd web && bun install && cd ..
 ```
 
 ### Environment Configuration
@@ -113,16 +133,32 @@ See [.env.example](.env.example) for the full list of available variables.
 ### Running the Service
 
 ```bash
-# Development mode with hot reload
+# Build web dashboard + start API server (recommended)
 bun run dev
 
-# Production mode
-bun run src/index.ts
+# Or run API server only (without web UI)
+bun run dev:api
+
+# Or run Astro dev server separately (for frontend development)
+bun run dev:web
 ```
 
 Service starts at `http://localhost:3000` (or configured PORT)
 
-Health check available at: `GET /api/health`
+- **Web Dashboard**: Open `http://localhost:3000` in your browser
+- **Health check**: `GET /api/health`
+- **Swagger Docs**: `GET /swagger`
+
+### Web Dashboard
+
+The project includes a built-in web dashboard powered by **Astro.js** and **TradingView Lightweight Charts**:
+
+- 📊 **Candlestick Charts** — Professional financial charts with volume bars
+- 🔀 **Grid & Overlay Modes** — View exchanges separately or overlaid for comparison
+- ✅ **Exchange Selector** — Pick from 15 exchanges with tier grouping (All / Tier 1 / None)
+- 📋 **Data Table** — Sortable table with best/worst value highlighting
+- 🎨 **Dark Theme** — Modern crypto-terminal aesthetic with glassmorphism effects
+- ⚡ **Zero Config** — Served directly from the Elysia API server, no separate frontend needed
 
 ## API Documentation
 
