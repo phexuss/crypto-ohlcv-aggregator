@@ -142,28 +142,22 @@ export class ChartManager {
 				autoSize: true,
 			});
 
-			const candleSeries = chart.addSeries(
-				LightweightCharts.CandlestickSeries,
-				{
-					upColor: colors.up,
-					downColor: colors.down,
-					borderUpColor: colors.up,
-					borderDownColor: colors.down,
-					wickUpColor: colors.up,
-					wickDownColor: colors.down,
-				},
-			);
+			const candleSeries = chart.addCandlestickSeries({
+				upColor: colors.up,
+				downColor: colors.down,
+				borderUpColor: colors.up,
+				borderDownColor: colors.down,
+				wickUpColor: colors.up,
+				wickDownColor: colors.down,
+			});
 
 			candleSeries.setData(candles);
 
 			// Volume
-			const volumeSeries = chart.addSeries(
-				LightweightCharts.HistogramSeries,
-				{
-					priceFormat: { type: "volume" },
-					priceScaleId: "volume",
-				},
-			);
+			const volumeSeries = chart.addHistogramSeries({
+				priceFormat: { type: "volume" },
+				priceScaleId: "volume",
+			});
 
 			chart.priceScale("volume").applyOptions({
 				scaleMargins: { top: 0.8, bottom: 0 },
@@ -230,7 +224,7 @@ export class ChartManager {
 
 			const colors = EXCHANGE_COLORS[exchange] || DEFAULT_COLORS;
 
-			const series = chart.addSeries(LightweightCharts.LineSeries, {
+			const series = chart.addLineSeries({
 				color: colors.line,
 				lineWidth: 2,
 				priceLineVisible: false,
