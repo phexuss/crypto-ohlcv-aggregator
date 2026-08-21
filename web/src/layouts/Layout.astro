@@ -273,7 +273,7 @@ const { title } = Astro.props;
 	/* ===== Toast ===== */
 	.toast-container {
 		position: fixed;
-		top: var(--sp-4);
+		bottom: var(--sp-4);
 		right: var(--sp-4);
 		z-index: 1000;
 		display: flex;
@@ -282,20 +282,50 @@ const { title } = Astro.props;
 	}
 
 	.toast {
-		padding: var(--sp-2) var(--sp-4);
-		border-radius: var(--radius-md);
-		font-family: var(--font-body);
-		font-size: var(--text-sm);
+		padding: var(--sp-2) var(--sp-3);
+		border-radius: var(--radius-sm);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
 		font-weight: 500;
-		border-left: 3px solid;
-		background: var(--bg-2);
-		max-width: 360px;
-		animation: toastIn 0.2s ease;
+		letter-spacing: 0.03em;
+		background: var(--bg-1);
+		border: 1px solid var(--border-1);
+		box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+		display: flex;
+		align-items: center;
+		gap: var(--sp-2);
+		max-width: 420px;
+		animation: toastIn 0.15s ease-out;
 	}
 
-	.toast-error { border-left-color: var(--red); color: #ffa4a0; }
-	.toast-success { border-left-color: var(--green); color: #7cedb8; }
-	.toast-info { border-left-color: var(--accent); color: var(--text-0); }
+	.toast-tag {
+		font-weight: 700;
+		flex-shrink: 0;
+	}
+
+	.toast-error {
+		border-left: 3px solid var(--red);
+		color: var(--text-0);
+	}
+	.toast-error .toast-tag {
+		color: var(--red);
+	}
+
+	.toast-success {
+		border-left: 3px solid var(--green);
+		color: var(--text-0);
+	}
+	.toast-success .toast-tag {
+		color: var(--green);
+	}
+
+	.toast-info {
+		border-left: 3px solid var(--accent);
+		color: var(--text-0);
+	}
+	.toast-info .toast-tag {
+		color: var(--accent);
+	}
 
 	/* ===== Animations — minimal, functional ===== */
 	@keyframes toastIn {

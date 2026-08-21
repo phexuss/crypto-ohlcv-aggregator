@@ -125,7 +125,9 @@ class CryptoAggregatorApp {
 			this.tableManager.render(data, exchanges);
 			this.updateStats(data, exchanges);
 
-			this.showToast(`Loaded ${data.length} data points from ${exchanges.length} exchanges`, "success");
+			const exCount = exchanges.length;
+			const exLabel = exCount === 1 ? "1 exchange" : `${exCount} exchanges`;
+			this.showToast(`Loaded ${data.length} data points from ${exLabel}`, "success");
 		} catch (err) {
 			this.setLoading(false);
 			this.showToast((err as Error).message, "error");
@@ -163,7 +165,7 @@ class CryptoAggregatorApp {
 		if (loading) {
 			fetchBtn?.classList.add("loading");
 			(fetchBtn as HTMLButtonElement).disabled = true;
-			if (fetchText) fetchText.textContent = "Loading...";
+			if (fetchText) fetchText.textContent = "LOADING...";
 
 			emptyState?.classList.add("hidden");
 			chartsGrid?.classList.add("hidden");
@@ -173,7 +175,7 @@ class CryptoAggregatorApp {
 		} else {
 			fetchBtn?.classList.remove("loading");
 			(fetchBtn as HTMLButtonElement).disabled = false;
-			if (fetchText) fetchText.textContent = "Fetch Data";
+			if (fetchText) fetchText.textContent = "FETCH MARKET DATA";
 			loadingState?.classList.add("hidden");
 		}
 	}
@@ -211,16 +213,27 @@ class CryptoAggregatorApp {
 			document.body.appendChild(container);
 		}
 
+		const tagMap = { success: "[OK]", error: "[ERR]", info: "[INFO]" };
+
 		const toast = document.createElement("div");
 		toast.className = `toast toast-${type}`;
-		toast.textContent = message;
+
+		const tagEl = document.createElement("span");
+		tagEl.className = "toast-tag";
+		tagEl.textContent = tagMap[type];
+
+		const textEl = document.createElement("span");
+		textEl.textContent = message;
+
+		toast.appendChild(tagEl);
+		toast.appendChild(textEl);
 		container.appendChild(toast);
 
 		setTimeout(() => {
 			toast.style.opacity = "0";
 			toast.style.transform = "translateX(20px)";
-			toast.style.transition = "all 0.3s ease-out";
-			setTimeout(() => toast.remove(), 300);
+			toast.style.transition = "all 0.2s ease-out";
+			setTimeout(() => toast.remove(), 200);
 		}, 4000);
 	}
 }
