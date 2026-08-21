@@ -1,0 +1,162 @@
+---
+---
+
+<div class="data-table-wrapper hidden" id="data-table-wrapper">
+	<button class="table-toggle" id="table-toggle">
+		<svg class="toggle-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+			<polyline points="6 9 12 15 18 9"></polyline>
+		</svg>
+		<span>Data Table</span>
+		<span class="table-count" id="table-count"></span>
+	</button>
+
+	<div class="table-container hidden" id="table-container">
+		<div class="table-scroll">
+			<table class="data-table" id="data-table">
+				<thead id="table-head"></thead>
+				<tbody id="table-body"></tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<style>
+	.data-table-wrapper {
+		margin-top: var(--space-4);
+		animation: fadeIn 0.3s ease-out;
+	}
+
+	.table-toggle {
+		display: flex;
+		align-items: center;
+		gap: var(--space-2);
+		width: 100%;
+		padding: var(--space-3) var(--space-4);
+		background: var(--bg-secondary);
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-md);
+		color: var(--text-secondary);
+		font-family: var(--font-sans);
+		font-size: var(--text-sm);
+		font-weight: 600;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+	}
+
+	.table-toggle:hover {
+		background: var(--bg-tertiary);
+		border-color: var(--border-default);
+		color: var(--text-primary);
+	}
+
+	.toggle-chevron {
+		transition: transform var(--transition-fast);
+	}
+
+	.table-toggle.expanded .toggle-chevron {
+		transform: rotate(180deg);
+	}
+
+	.table-count {
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		color: var(--text-muted);
+		margin-left: auto;
+	}
+
+	.table-container {
+		margin-top: var(--space-2);
+		border: 1px solid var(--border-subtle);
+		border-radius: var(--radius-md);
+		overflow: hidden;
+		animation: fadeIn 0.3s ease-out;
+	}
+
+	.table-scroll {
+		overflow-x: auto;
+		max-height: 400px;
+		overflow-y: auto;
+	}
+
+	.data-table {
+		width: 100%;
+		border-collapse: collapse;
+		font-size: var(--text-xs);
+	}
+
+	.data-table :global(th) {
+		position: sticky;
+		top: 0;
+		background: var(--bg-tertiary);
+		padding: var(--space-2) var(--space-3);
+		text-align: left;
+		font-weight: 600;
+		color: var(--text-secondary);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		font-size: 0.65rem;
+		border-bottom: 1px solid var(--border-default);
+		white-space: nowrap;
+		cursor: pointer;
+		user-select: none;
+		transition: color var(--transition-fast);
+		z-index: 1;
+	}
+
+	.data-table :global(th:hover) {
+		color: var(--text-primary);
+	}
+
+	.data-table :global(th.sorted) {
+		color: var(--text-accent);
+	}
+
+	.data-table :global(td) {
+		padding: var(--space-2) var(--space-3);
+		border-bottom: 1px solid var(--border-subtle);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		color: var(--text-primary);
+		white-space: nowrap;
+	}
+
+	.data-table :global(tr:hover td) {
+		background: rgba(255, 255, 255, 0.02);
+	}
+
+	.data-table :global(.cell-timestamp) {
+		color: var(--text-secondary);
+	}
+
+	.data-table :global(.cell-green) {
+		color: var(--color-green);
+	}
+
+	.data-table :global(.cell-red) {
+		color: var(--color-red);
+	}
+
+	.data-table :global(.cell-best) {
+		background: rgba(16, 185, 129, 0.08);
+	}
+
+	.data-table :global(.cell-worst) {
+		background: rgba(239, 68, 68, 0.08);
+	}
+
+	.hidden {
+		display: none !important;
+	}
+</style>
+
+<script>
+	const toggle = document.getElementById("table-toggle");
+	const container = document.getElementById("table-container");
+
+	if (toggle && container) {
+		toggle.addEventListener("click", () => {
+			toggle.classList.toggle("expanded");
+			container.classList.toggle("hidden");
+		});
+	}
+</script>
