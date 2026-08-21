@@ -7,6 +7,22 @@
 
 A production-grade cryptocurrency data aggregation service that fetches and synchronizes historical OHLCV (Open, High, Low, Close, Volume) candlestick data from 15 major cryptocurrency futures exchanges. Built with modern TypeScript, ElysiaJS framework, and Bun runtime.
 
+> ⚡ **NEW: Interactive Web Dashboard!**
+> 
+> A raw, high-contrast trading terminal interface built with **Astro.js** and **TradingView Lightweight Charts**. Open `http://localhost:3000` to visualize candlestick data, compare exchange prices side-by-side in **Grid** or **Overlay** modes, and inspect raw synchronized data tables.
+
+## 📊 Web Dashboard
+
+The project features a built-in, zero-dependency web interface served directly by the Elysia backend:
+
+- 📈 **TradingView Candlestick Charts**: Real-time financial charts with volume indicators.
+- 🔀 **Grid & Overlay Modes**: View each exchange in a dedicated chart grid or overlay all price lines on a single chart for arbitrage & spread analysis.
+- ⚡ **15 Exchanges Supported**: Quick selection filters (All, Tier 1, Clear) for Binance, OKX, Bybit, KuCoin, Bitget, MEXC, Gate.io, BitMEX, HTX, HyperLiquid, XT, BingX, CoinEx, Bitmart, and Blofin.
+- 📋 **Interactive Data Table**: Sortable columns with best/worst value highlighting.
+- 🖥️ **Brutalist Dark Theme**: Custom Space Grotesk + IBM Plex Mono typography with high-contrast amber (`#FF6B00`) styling.
+
+---
+
 ## Project Background
 
 This project started as a **freelance commission** for a client who needed a service to aggregate cryptocurrency market data from multiple exchanges. The original version ran in production, handling live trading data.
