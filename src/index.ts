@@ -1,3 +1,4 @@
+import { staticPlugin } from "@elysiajs/static";
 import { swagger } from "@elysiajs/swagger";
 import { consola } from "consola";
 import { Elysia } from "elysia";
@@ -53,6 +54,12 @@ const app = new Elysia()
 		}),
 	)
 	.use(createOhlcvPlugin(adapters))
+	.use(
+		staticPlugin({
+			assets: "public",
+			prefix: "/",
+		}),
+	)
 	.listen(config.port);
 
 consola.ready({
