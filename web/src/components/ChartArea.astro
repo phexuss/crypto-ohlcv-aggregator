@@ -5,25 +5,16 @@
 	<!-- Toolbar -->
 	<div class="chart-toolbar">
 		<div class="toolbar-left">
-			<h2 class="chart-title" id="chart-title">Select exchanges and click Fetch</h2>
-			<span class="chart-subtitle" id="chart-subtitle"></span>
+			<h2 class="chart-title" id="chart-title">MARKET OVERVIEW</h2>
+			<span class="chart-subtitle" id="chart-subtitle">READY</span>
 		</div>
 		<div class="toolbar-right">
 			<div class="view-mode-toggle" id="view-mode-toggle">
 				<button class="toggle-btn active" data-mode="grid" title="Grid View">
-					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<rect x="3" y="3" width="7" height="7"></rect>
-						<rect x="14" y="3" width="7" height="7"></rect>
-						<rect x="3" y="14" width="7" height="7"></rect>
-						<rect x="14" y="14" width="7" height="7"></rect>
-					</svg>
-					Grid
+					GRID
 				</button>
 				<button class="toggle-btn" data-mode="overlay" title="Overlay View">
-					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-						<polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
-					</svg>
-					Overlay
+					OVERLAY
 				</button>
 			</div>
 		</div>
@@ -33,36 +24,19 @@
 	<div class="chart-container" id="chart-container">
 		<!-- Empty State -->
 		<div class="empty-state" id="empty-state">
-			<div class="empty-icon">
-				<svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
-					<rect x="2" y="7" width="3" height="10" rx="0.5" stroke="var(--text-muted)" />
-					<rect x="7" y="4" width="3" height="16" rx="0.5" stroke="var(--text-muted)" />
-					<rect x="12" y="9" width="3" height="6" rx="0.5" stroke="var(--text-muted)" />
-					<rect x="17" y="5" width="3" height="14" rx="0.5" stroke="var(--text-muted)" />
-					<line x1="3.5" y1="5" x2="3.5" y2="9" stroke="var(--text-muted)" stroke-width="0.8" />
-					<line x1="8.5" y1="2" x2="8.5" y2="6" stroke="var(--text-muted)" stroke-width="0.8" />
-					<line x1="13.5" y1="7" x2="13.5" y2="11" stroke="var(--text-muted)" stroke-width="0.8" />
-					<line x1="18.5" y1="3" x2="18.5" y2="7" stroke="var(--text-muted)" stroke-width="0.8" />
-					<line x1="3.5" y1="15" x2="3.5" y2="19" stroke="var(--text-muted)" stroke-width="0.8" />
-					<line x1="8.5" y1="18" x2="8.5" y2="22" stroke="var(--text-muted)" stroke-width="0.8" />
-					<line x1="13.5" y1="13" x2="13.5" y2="17" stroke="var(--text-muted)" stroke-width="0.8" />
-					<line x1="18.5" y1="17" x2="18.5" y2="21" stroke="var(--text-muted)" stroke-width="0.8" />
-				</svg>
+			<div class="empty-terminal-prompt">
+				<span class="prompt-symbol">&gt;</span>
+				<span class="prompt-text">NO DATA LOADED. SELECT EXCHANGES &amp; CLICK FETCH.</span>
 			</div>
-			<p class="empty-title">No data loaded</p>
-			<p class="empty-desc">
-				Select exchanges, set parameters, and click <strong>Fetch Data</strong> to load candlestick charts
-			</p>
 		</div>
 
 		<!-- Loading State -->
 		<div class="loading-state hidden" id="loading-state">
-			<div class="loading-spinner"></div>
-			<p class="loading-text">Fetching data from exchanges...</p>
+			<div class="loading-indicator">[ FETCHING MARKET DATA ]</div>
 			<p class="loading-sub" id="loading-sub"></p>
 		</div>
 
-		<!-- Charts will be rendered here by chart.ts -->
+		<!-- Charts rendered by chart.ts -->
 		<div class="charts-grid hidden" id="charts-grid"></div>
 		<div class="chart-overlay hidden" id="chart-overlay"></div>
 	</div>
@@ -74,119 +48,118 @@
 		display: flex;
 		flex-direction: column;
 		min-height: 0;
-		animation: fadeIn 0.4s ease-out;
+		background: var(--bg-1);
+		border: 1px solid var(--border-0);
+		border-radius: var(--radius-md);
+		overflow: hidden;
 	}
 
 	.chart-toolbar {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: var(--space-4) var(--space-5);
-		border-bottom: 1px solid var(--border-subtle);
-		background: var(--bg-secondary);
-		border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+		padding: var(--sp-3) var(--sp-4);
+		border-bottom: 1px solid var(--border-0);
+		background: var(--bg-2);
 		flex-shrink: 0;
 	}
 
 	.toolbar-left {
 		display: flex;
-		align-items: baseline;
-		gap: var(--space-3);
-		min-width: 0;
+		align-items: center;
+		gap: var(--sp-3);
 	}
 
 	.chart-title {
-		font-size: var(--text-md);
-		font-weight: 600;
-		color: var(--text-primary);
-		white-space: nowrap;
+		font-family: var(--font-heading);
+		font-size: var(--text-sm);
+		font-weight: 700;
+		color: var(--text-0);
+		letter-spacing: 0.05em;
 	}
 
 	.chart-subtitle {
-		font-size: var(--text-xs);
 		font-family: var(--font-mono);
-		color: var(--text-muted);
+		font-size: var(--text-xs);
+		color: var(--text-2);
 	}
 
 	.toolbar-right {
 		display: flex;
 		align-items: center;
-		gap: var(--space-3);
+		gap: var(--sp-3);
 	}
 
 	.view-mode-toggle {
 		display: flex;
-		gap: var(--space-1);
+		gap: 2px;
+		background: var(--bg-0);
+		padding: 2px;
+		border: 1px solid var(--border-1);
+		border-radius: var(--radius-sm);
 	}
 
 	.view-mode-toggle .toggle-btn {
-		display: flex;
-		align-items: center;
-		gap: var(--space-1);
-		padding: var(--space-1) var(--space-3);
+		padding: 3px var(--sp-3);
 		border-radius: var(--radius-sm);
-		border: 1px solid var(--border-default);
-		background: var(--bg-tertiary);
-		color: var(--text-secondary);
+		border: none;
+		background: transparent;
+		color: var(--text-2);
+		font-family: var(--font-heading);
 		font-size: var(--text-xs);
-		font-weight: 500;
+		font-weight: 600;
+		letter-spacing: 0.05em;
 		cursor: pointer;
-		transition: all var(--transition-fast);
+		transition: all var(--ease);
 	}
 
 	.view-mode-toggle .toggle-btn:hover {
-		border-color: rgba(139, 92, 246, 0.3);
+		color: var(--text-0);
 	}
 
 	.view-mode-toggle .toggle-btn.active {
-		background: rgba(139, 92, 246, 0.15);
-		border-color: rgba(139, 92, 246, 0.5);
-		color: var(--text-accent);
+		background: var(--accent);
+		color: #000;
 	}
 
 	/* Chart Container */
 	.chart-container {
 		flex: 1;
-		min-height: 400px;
+		min-height: 420px;
 		position: relative;
-		background: var(--bg-secondary);
-		border-radius: 0 0 var(--radius-lg) var(--radius-lg);
-		overflow: hidden;
+		background: var(--bg-0);
 	}
 
 	/* Empty State */
 	.empty-state {
 		display: flex;
-		flex-direction: column;
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		min-height: 400px;
-		padding: var(--space-8);
-		text-align: center;
+		min-height: 420px;
+		padding: var(--sp-6);
 	}
 
-	.empty-icon {
-		margin-bottom: var(--space-5);
-		opacity: 0.3;
+	.empty-terminal-prompt {
+		display: flex;
+		align-items: center;
+		gap: var(--sp-2);
+		padding: var(--sp-3) var(--sp-5);
+		background: var(--bg-1);
+		border: 1px solid var(--border-1);
+		border-radius: var(--radius-sm);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
 	}
 
-	.empty-title {
-		font-size: var(--text-lg);
-		font-weight: 600;
-		color: var(--text-secondary);
-		margin-bottom: var(--space-2);
+	.prompt-symbol {
+		color: var(--accent);
+		font-weight: 700;
 	}
 
-	.empty-desc {
-		font-size: var(--text-sm);
-		color: var(--text-muted);
-		max-width: 320px;
-		line-height: 1.6;
-	}
-
-	.empty-desc strong {
-		color: var(--text-accent);
+	.prompt-text {
+		color: var(--text-1);
+		letter-spacing: 0.05em;
 	}
 
 	/* Loading State */
@@ -196,48 +169,44 @@
 		align-items: center;
 		justify-content: center;
 		height: 100%;
-		min-height: 400px;
-		padding: var(--space-8);
+		min-height: 420px;
+		gap: var(--sp-2);
 	}
 
-	.loading-spinner {
-		width: 40px;
-		height: 40px;
-		border: 3px solid var(--border-default);
-		border-top-color: var(--color-purple);
-		border-radius: 50%;
-		animation: spin 0.8s linear infinite;
-		margin-bottom: var(--space-4);
+	.loading-indicator {
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+		font-weight: 600;
+		color: var(--accent);
+		letter-spacing: 0.1em;
+		animation: pulse 1s infinite alternate;
 	}
 
-	.loading-text {
-		font-size: var(--text-base);
-		color: var(--text-secondary);
-		margin-bottom: var(--space-1);
+	@keyframes pulse {
+		from { opacity: 0.4; }
+		to { opacity: 1; }
 	}
 
 	.loading-sub {
-		font-size: var(--text-xs);
 		font-family: var(--font-mono);
-		color: var(--text-muted);
+		font-size: var(--text-xs);
+		color: var(--text-2);
 	}
 
 	/* Charts Grid (grid mode) */
 	.charts-grid {
 		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-		gap: var(--space-3);
-		padding: var(--space-3);
+		grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+		gap: 1px;
+		background: var(--border-0);
+		padding: 1px;
 		height: 100%;
-		min-height: 400px;
+		min-height: 420px;
 		overflow-y: auto;
 	}
 
 	.charts-grid :global(.chart-card) {
-		background: var(--bg-tertiary);
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-md);
-		overflow: hidden;
+		background: var(--bg-1);
 		min-height: 300px;
 		display: flex;
 		flex-direction: column;
@@ -247,21 +216,25 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
-		padding: var(--space-2) var(--space-3);
-		border-bottom: 1px solid var(--border-subtle);
+		padding: var(--sp-2) var(--sp-3);
+		background: var(--bg-2);
+		border-bottom: 1px solid var(--border-0);
 	}
 
 	.charts-grid :global(.chart-card-name) {
-		font-size: var(--text-sm);
+		font-family: var(--font-heading);
+		font-size: var(--text-xs);
 		font-weight: 600;
+		letter-spacing: 0.05em;
 		display: flex;
 		align-items: center;
-		gap: var(--space-2);
+		gap: 6px;
+		color: var(--text-0);
 	}
 
 	.charts-grid :global(.chart-card-price) {
-		font-size: var(--text-sm);
 		font-family: var(--font-mono);
+		font-size: var(--text-xs);
 		font-weight: 500;
 	}
 
@@ -273,49 +246,43 @@
 	/* Chart Overlay (overlay mode) */
 	.chart-overlay {
 		height: 100%;
-		min-height: 400px;
-		padding: var(--space-3);
+		min-height: 420px;
+		padding: var(--sp-3);
+		display: flex;
+		flex-direction: column;
 	}
 
 	.chart-overlay :global(.overlay-legend) {
 		display: flex;
 		flex-wrap: wrap;
-		gap: var(--space-3);
-		padding: var(--space-2) var(--space-3);
-		margin-bottom: var(--space-2);
+		gap: var(--sp-4);
+		padding: var(--sp-2) var(--sp-3);
+		background: var(--bg-1);
+		border: 1px solid var(--border-0);
+		margin-bottom: var(--sp-2);
 	}
 
 	.chart-overlay :global(.legend-item) {
 		display: flex;
 		align-items: center;
-		gap: var(--space-1);
+		gap: 6px;
+		font-family: var(--font-mono);
 		font-size: var(--text-xs);
-		font-weight: 500;
-		color: var(--text-secondary);
+		color: var(--text-1);
 	}
 
 	.chart-overlay :global(.legend-dot) {
-		width: 8px;
-		height: 8px;
-		border-radius: 50%;
+		width: 6px;
+		height: 6px;
+		border-radius: 1px;
 	}
 
 	.chart-overlay :global(.overlay-chart-wrapper) {
-		height: calc(100% - 40px);
-		min-height: 350px;
-	}
-
-	.hidden {
-		display: none !important;
+		flex: 1;
+		min-height: 360px;
 	}
 
 	@media (max-width: 768px) {
-		.chart-toolbar {
-			flex-direction: column;
-			gap: var(--space-2);
-			align-items: flex-start;
-		}
-
 		.charts-grid {
 			grid-template-columns: 1fr;
 		}

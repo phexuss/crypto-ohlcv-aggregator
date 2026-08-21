@@ -24,7 +24,7 @@ const EXCHANGE_COLORS: Record<string, { up: string; down: string; line: string }
 	blofin: { up: "#A855F7", down: "#8B3FD4", line: "#A855F7" },
 };
 
-const DEFAULT_COLORS = { up: "#8b5cf6", down: "#6366f1", line: "#8b5cf6" };
+const DEFAULT_COLORS = { up: "#00D672", down: "#FF3B30", line: "#FF6B00" };
 
 interface OhlcvCandle {
 	open: number;
@@ -42,35 +42,35 @@ interface AggregatedDataPoint {
 const CHART_OPTIONS_BASE = {
 	layout: {
 		background: { type: "solid" as const, color: "transparent" },
-		textColor: "#9ca3af",
-		fontFamily: "'Inter', sans-serif",
-		fontSize: 11,
+		textColor: "#a0a0a0",
+		fontFamily: "'IBM Plex Mono', monospace",
+		fontSize: 10,
 	},
 	grid: {
-		vertLines: { color: "rgba(255, 255, 255, 0.04)" },
-		horzLines: { color: "rgba(255, 255, 255, 0.04)" },
+		vertLines: { color: "#181818" },
+		horzLines: { color: "#181818" },
 	},
 	crosshair: {
 		mode: 0,
 		vertLine: {
-			color: "rgba(139, 92, 246, 0.3)",
+			color: "rgba(255, 107, 0, 0.4)",
 			width: 1,
 			style: 2,
-			labelBackgroundColor: "#8b5cf6",
+			labelBackgroundColor: "#FF6B00",
 		},
 		horzLine: {
-			color: "rgba(139, 92, 246, 0.3)",
+			color: "rgba(255, 107, 0, 0.4)",
 			width: 1,
 			style: 2,
-			labelBackgroundColor: "#8b5cf6",
+			labelBackgroundColor: "#FF6B00",
 		},
 	},
 	rightPriceScale: {
-		borderColor: "rgba(255, 255, 255, 0.06)",
+		borderColor: "#1e1e1e",
 		scaleMargins: { top: 0.1, bottom: 0.2 },
 	},
 	timeScale: {
-		borderColor: "rgba(255, 255, 255, 0.06)",
+		borderColor: "#1e1e1e",
 		timeVisible: true,
 		secondsVisible: false,
 	},
@@ -104,7 +104,7 @@ export class ChartManager {
 
 			// Card
 			const card = document.createElement("div");
-			card.className = "chart-card animate-fade-in";
+			card.className = "chart-card";
 
 			// Header
 			const header = document.createElement("div");
@@ -113,14 +113,14 @@ export class ChartManager {
 			const nameEl = document.createElement("span");
 			nameEl.className = "chart-card-name";
 			const dot = document.createElement("span");
-			dot.style.cssText = `width:8px;height:8px;border-radius:50%;background:${colors.line}`;
+			dot.style.cssText = `width:6px;height:6px;background:${colors.line}`;
 			nameEl.appendChild(dot);
 			nameEl.appendChild(document.createTextNode(this.capitalize(exchange)));
 
 			const priceEl = document.createElement("span");
 			priceEl.className = "chart-card-price";
 			const priceChange = lastCandle.close >= lastCandle.open;
-			priceEl.style.color = priceChange ? "#10b981" : "#ef4444";
+			priceEl.style.color = priceChange ? "#00D672" : "#FF3B30";
 			priceEl.textContent = `$${this.formatNumber(lastCandle.close)}`;
 
 			header.appendChild(nameEl);
@@ -168,8 +168,8 @@ export class ChartManager {
 					time: c.time,
 					value: c.volume,
 					color: c.close >= c.open
-						? "rgba(16, 185, 129, 0.2)"
-						: "rgba(239, 68, 68, 0.2)",
+						? "rgba(0, 214, 114, 0.25)"
+						: "rgba(255, 59, 48, 0.25)",
 				})),
 			);
 

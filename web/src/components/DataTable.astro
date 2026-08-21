@@ -3,10 +3,8 @@
 
 <div class="data-table-wrapper hidden" id="data-table-wrapper">
 	<button class="table-toggle" id="table-toggle">
-		<svg class="toggle-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-			<polyline points="6 9 12 15 18 9"></polyline>
-		</svg>
-		<span>Data Table</span>
+		<span class="toggle-icon">[+]</span>
+		<span class="toggle-title">DATA TABLE</span>
 		<span class="table-count" id="table-count"></span>
 	</button>
 
@@ -22,141 +20,140 @@
 
 <style>
 	.data-table-wrapper {
-		margin-top: var(--space-4);
-		animation: fadeIn 0.3s ease-out;
+		margin-top: var(--sp-4);
 	}
 
 	.table-toggle {
 		display: flex;
 		align-items: center;
-		gap: var(--space-2);
+		gap: var(--sp-2);
 		width: 100%;
-		padding: var(--space-3) var(--space-4);
-		background: var(--bg-secondary);
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-md);
-		color: var(--text-secondary);
-		font-family: var(--font-sans);
-		font-size: var(--text-sm);
-		font-weight: 600;
+		padding: var(--sp-2) var(--sp-3);
+		background: var(--bg-1);
+		border: 1px solid var(--border-0);
+		border-radius: var(--radius-sm);
+		color: var(--text-1);
+		font-family: var(--font-heading);
+		font-size: var(--text-xs);
+		font-weight: 700;
+		letter-spacing: 0.05em;
 		cursor: pointer;
-		transition: all var(--transition-fast);
+		transition: all var(--ease);
 	}
 
 	.table-toggle:hover {
-		background: var(--bg-tertiary);
-		border-color: var(--border-default);
-		color: var(--text-primary);
+		background: var(--bg-2);
+		border-color: var(--border-1);
+		color: var(--text-0);
 	}
 
-	.toggle-chevron {
-		transition: transform var(--transition-fast);
+	.toggle-icon {
+		font-family: var(--font-mono);
+		color: var(--accent);
 	}
 
-	.table-toggle.expanded .toggle-chevron {
-		transform: rotate(180deg);
+	.table-toggle.expanded .toggle-icon {
+		color: var(--text-2);
 	}
 
 	.table-count {
 		font-family: var(--font-mono);
 		font-size: var(--text-xs);
-		color: var(--text-muted);
+		color: var(--text-2);
 		margin-left: auto;
 	}
 
 	.table-container {
-		margin-top: var(--space-2);
-		border: 1px solid var(--border-subtle);
-		border-radius: var(--radius-md);
+		margin-top: var(--sp-2);
+		border: 1px solid var(--border-0);
+		border-radius: var(--radius-sm);
+		background: var(--bg-0);
 		overflow: hidden;
-		animation: fadeIn 0.3s ease-out;
 	}
 
 	.table-scroll {
 		overflow-x: auto;
-		max-height: 400px;
+		max-height: 380px;
 		overflow-y: auto;
 	}
 
 	.data-table {
 		width: 100%;
 		border-collapse: collapse;
-		font-size: var(--text-xs);
 	}
 
 	.data-table :global(th) {
 		position: sticky;
 		top: 0;
-		background: var(--bg-tertiary);
-		padding: var(--space-2) var(--space-3);
+		background: var(--bg-2);
+		padding: var(--sp-2) var(--sp-3);
 		text-align: left;
-		font-weight: 600;
-		color: var(--text-secondary);
+		font-family: var(--font-heading);
+		font-size: 10px;
+		font-weight: 700;
+		color: var(--text-2);
 		text-transform: uppercase;
-		letter-spacing: 0.04em;
-		font-size: 0.65rem;
-		border-bottom: 1px solid var(--border-default);
+		letter-spacing: 0.08em;
+		border-bottom: 1px solid var(--border-1);
 		white-space: nowrap;
 		cursor: pointer;
 		user-select: none;
-		transition: color var(--transition-fast);
+		transition: color var(--ease);
 		z-index: 1;
 	}
 
 	.data-table :global(th:hover) {
-		color: var(--text-primary);
+		color: var(--text-0);
 	}
 
 	.data-table :global(th.sorted) {
-		color: var(--text-accent);
+		color: var(--accent);
 	}
 
 	.data-table :global(td) {
-		padding: var(--space-2) var(--space-3);
-		border-bottom: 1px solid var(--border-subtle);
+		padding: 6px var(--sp-3);
+		border-bottom: 1px solid var(--border-0);
 		font-family: var(--font-mono);
 		font-size: var(--text-xs);
-		color: var(--text-primary);
+		color: var(--text-0);
 		white-space: nowrap;
 	}
 
 	.data-table :global(tr:hover td) {
-		background: rgba(255, 255, 255, 0.02);
+		background: var(--bg-2);
 	}
 
 	.data-table :global(.cell-timestamp) {
-		color: var(--text-secondary);
+		color: var(--text-2);
 	}
 
 	.data-table :global(.cell-green) {
-		color: var(--color-green);
+		color: var(--green);
 	}
 
 	.data-table :global(.cell-red) {
-		color: var(--color-red);
+		color: var(--red);
 	}
 
 	.data-table :global(.cell-best) {
-		background: rgba(16, 185, 129, 0.08);
+		background: var(--green-dim);
 	}
 
 	.data-table :global(.cell-worst) {
-		background: rgba(239, 68, 68, 0.08);
-	}
-
-	.hidden {
-		display: none !important;
+		background: var(--red-dim);
 	}
 </style>
 
 <script>
 	const toggle = document.getElementById("table-toggle");
 	const container = document.getElementById("table-container");
+	const icon = toggle?.querySelector(".toggle-icon");
 
 	if (toggle && container) {
 		toggle.addEventListener("click", () => {
-			toggle.classList.toggle("expanded");
+			const expanded = toggle.classList.toggle("expanded");
 			container.classList.toggle("hidden");
+			if (icon) icon.textContent = expanded ? "[-]" : "[+]";
 		});
 	}
 </script>
