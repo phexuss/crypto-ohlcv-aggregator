@@ -13,7 +13,12 @@ A production-grade cryptocurrency data aggregation service that fetches and sync
 
 ## 📊 Web Dashboard
 
+
 The project features a built-in, zero-dependency web interface served directly by the Elysia backend:
+<p align="center">
+  <img width="880"  alt="image" src="https://github.com/user-attachments/assets/284091a4-0644-4313-a5b9-2f7bdca0c4cb" />
+<img  width="880" alt="image" src="https://github.com/user-attachments/assets/640c4b83-42c8-4c1f-bfb0-8b1e152979b0" />
+</p>
 
 - 📈 **TradingView Candlestick Charts**: Real-time financial charts with volume indicators.
 - 🔀 **Grid & Overlay Modes**: View each exchange in a dedicated chart grid or overlay all price lines on a single chart for arbitrage & spread analysis.
