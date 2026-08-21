@@ -1,0 +1,424 @@
+---
+const exchanges = [
+	{ id: "binance", name: "Binance", tier: 1 },
+	{ id: "okx", name: "OKX", tier: 1 },
+	{ id: "bybit", name: "Bybit", tier: 1 },
+	{ id: "kucoin", name: "KuCoin", tier: 2 },
+	{ id: "bitget", name: "Bitget", tier: 2 },
+	{ id: "mexc", name: "MEXC", tier: 2 },
+	{ id: "gateio", name: "Gate.io", tier: 2 },
+	{ id: "bitmex", name: "BitMEX", tier: 3 },
+	{ id: "htx", name: "HTX", tier: 3 },
+	{ id: "hyperliquid", name: "HyperLiquid", tier: 3 },
+	{ id: "xt", name: "XT", tier: 3 },
+	{ id: "bingx", name: "BingX", tier: 3 },
+	{ id: "coinex", name: "CoinEx", tier: 3 },
+	{ id: "bitmart", name: "Bitmart", tier: 3 },
+	{ id: "blofin", name: "Blofin", tier: 3 },
+];
+
+const intervals = ["1m", "5m", "15m", "1h", "4h", "1d"];
+const periods = [
+	{ label: "24h", value: "24h" },
+	{ label: "7d", value: "7d" },
+	{ label: "30d", value: "30d" },
+];
+---
+
+<aside class="sidebar" id="sidebar">
+	<div class="sidebar-inner">
+		<!-- Exchange Selector -->
+		<section class="sidebar-section">
+			<div class="section-header">
+				<span class="label">Exchanges</span>
+				<div class="quick-select">
+					<button class="btn btn-ghost btn-sm" data-select="all">All</button>
+					<button class="btn btn-ghost btn-sm" data-select="tier1">Tier 1</button>
+					<button class="btn btn-ghost btn-sm" data-select="none">None</button>
+				</div>
+			</div>
+			<div class="exchange-grid" id="exchange-grid">
+				{exchanges.map((ex) => (
+					<label class="exchange-chip" data-exchange={ex.id} data-tier={ex.tier}>
+						<input type="checkbox" name="exchange" value={ex.id} />
+						<span class="chip-content">
+							<span class="chip-dot" data-tier={ex.tier}></span>
+							<span class="chip-name">{ex.name}</span>
+						</span>
+					</label>
+				))}
+			</div>
+		</section>
+
+		<div class="divider"></div>
+
+		<!-- Market Input -->
+		<section class="sidebar-section">
+			<label class="label" for="market-input">Market / Symbol</label>
+			<div class="input-with-icon">
+				<svg class="input-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+					<circle cx="11" cy="11" r="8"></circle>
+					<path d="m21 21-4.35-4.35"></path>
+				</svg>
+				<input
+					type="text"
+					id="market-input"
+					placeholder="BTCUSDT"
+					value="BTCUSDT"
+					spellcheck="false"
+					autocomplete="off"
+				/>
+			</div>
+		</section>
+
+		<div class="divider"></div>
+
+		<!-- Interval Selector -->
+		<section class="sidebar-section">
+			<span class="label">Interval</span>
+			<div class="toggle-group" id="interval-group">
+				{intervals.map((int) => (
+					<button
+						class={`toggle-btn ${int === "1h" ? "active" : ""}`}
+						data-interval={int}
+					>
+						{int}
+					</button>
+				))}
+			</div>
+		</section>
+
+		<div class="divider"></div>
+
+		<!-- Period Selector -->
+		<section class="sidebar-section">
+			<span class="label">Period</span>
+			<div class="toggle-group" id="period-group">
+				{periods.map((p) => (
+					<button
+						class={`toggle-btn ${p.value === "24h" ? "active" : ""}`}
+						data-period={p.value}
+					>
+						{p.label}
+					</button>
+				))}
+				<button class="toggle-btn" data-period="custom" id="custom-period-btn">
+					Custom
+				</button>
+			</div>
+			<input
+				type="text"
+				id="custom-period-input"
+				class="custom-period-input hidden"
+				placeholder="e.g. 12h, 3d, or timestamp"
+				spellcheck="false"
+			/>
+		</section>
+
+		<div class="divider"></div>
+
+		<!-- Fetch Button -->
+		<button class="btn btn-primary fetch-btn" id="fetch-btn">
+			<svg class="fetch-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+				<polyline points="1 4 1 10 7 10"></polyline>
+				<path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"></path>
+			</svg>
+			<span class="fetch-text">Fetch Data</span>
+		</button>
+
+		<!-- Stats panel (hidden until data loaded) -->
+		<div class="stats-panel hidden" id="stats-panel">
+			<div class="divider"></div>
+			<span class="label">Quick Stats</span>
+			<div class="stats-grid">
+				<div class="stat-item">
+					<span class="stat-label">Exchanges</span>
+					<span class="stat-value" id="stat-exchanges">—</span>
+				</div>
+				<div class="stat-item">
+					<span class="stat-label">Data Points</span>
+					<span class="stat-value" id="stat-datapoints">—</span>
+				</div>
+				<div class="stat-item">
+					<span class="stat-label">Time Range</span>
+					<span class="stat-value" id="stat-timerange">—</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</aside>
+
+<style>
+	.sidebar {
+		position: fixed;
+		top: var(--header-height);
+		left: 0;
+		bottom: 0;
+		width: var(--sidebar-width);
+		background: var(--bg-secondary);
+		border-right: 1px solid var(--border-subtle);
+		overflow-y: auto;
+		z-index: 50;
+		transition: transform var(--transition-base);
+	}
+
+	.sidebar-inner {
+		padding: var(--space-5);
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-1);
+	}
+
+	.sidebar-section {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.section-header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: var(--space-3);
+	}
+
+	.section-header .label {
+		margin-bottom: 0;
+	}
+
+	.quick-select {
+		display: flex;
+		gap: var(--space-1);
+	}
+
+	/* Exchange Grid */
+	.exchange-grid {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--space-2);
+	}
+
+	.exchange-chip {
+		cursor: pointer;
+		user-select: none;
+	}
+
+	.exchange-chip input {
+		display: none;
+	}
+
+	.chip-content {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--space-2);
+		padding: var(--space-1) var(--space-3);
+		border-radius: var(--radius-full);
+		border: 1px solid var(--border-default);
+		background: var(--bg-tertiary);
+		font-size: var(--text-xs);
+		font-weight: 500;
+		color: var(--text-secondary);
+		transition: all var(--transition-fast);
+	}
+
+	.chip-dot {
+		width: 6px;
+		height: 6px;
+		border-radius: 50%;
+		flex-shrink: 0;
+	}
+
+	.chip-dot[data-tier="1"] { background: var(--color-green); }
+	.chip-dot[data-tier="2"] { background: var(--color-yellow); }
+	.chip-dot[data-tier="3"] { background: var(--color-blue); }
+
+	.exchange-chip:hover .chip-content {
+		border-color: rgba(139, 92, 246, 0.3);
+		background: rgba(139, 92, 246, 0.08);
+	}
+
+	.exchange-chip input:checked + .chip-content {
+		background: rgba(139, 92, 246, 0.15);
+		border-color: rgba(139, 92, 246, 0.5);
+		color: var(--text-accent);
+		box-shadow: 0 0 12px rgba(139, 92, 246, 0.15);
+	}
+
+	/* Input with icon */
+	.input-with-icon {
+		position: relative;
+	}
+
+	.input-icon {
+		position: absolute;
+		left: var(--space-3);
+		top: 50%;
+		transform: translateY(-50%);
+		color: var(--text-muted);
+		pointer-events: none;
+	}
+
+	.input-with-icon input {
+		padding-left: calc(var(--space-3) + 14px + var(--space-2));
+	}
+
+	/* Toggle Group */
+	.toggle-group {
+		display: flex;
+		gap: var(--space-1);
+		flex-wrap: wrap;
+	}
+
+	.toggle-btn {
+		padding: var(--space-2) var(--space-3);
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-default);
+		background: var(--bg-tertiary);
+		color: var(--text-secondary);
+		font-family: var(--font-mono);
+		font-size: var(--text-xs);
+		font-weight: 500;
+		cursor: pointer;
+		transition: all var(--transition-fast);
+		user-select: none;
+	}
+
+	.toggle-btn:hover {
+		border-color: rgba(139, 92, 246, 0.3);
+		color: var(--text-primary);
+	}
+
+	.toggle-btn.active {
+		background: rgba(139, 92, 246, 0.15);
+		border-color: rgba(139, 92, 246, 0.5);
+		color: var(--text-accent);
+	}
+
+	/* Custom period input */
+	.custom-period-input {
+		margin-top: var(--space-2);
+		font-family: var(--font-mono);
+		font-size: var(--text-sm);
+	}
+
+	.hidden {
+		display: none !important;
+	}
+
+	/* Fetch Button */
+	.fetch-btn {
+		width: 100%;
+		padding: var(--space-3) var(--space-5);
+		font-size: var(--text-base);
+		margin-top: var(--space-2);
+	}
+
+	.fetch-btn.loading .fetch-icon {
+		animation: spin 1s linear infinite;
+	}
+
+	.fetch-btn.loading .fetch-text {
+		opacity: 0.7;
+	}
+
+	/* Stats Panel */
+	.stats-panel {
+		animation: fadeIn 0.3s ease-out;
+	}
+
+	.stats-grid {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		gap: var(--space-2);
+	}
+
+	.stat-item {
+		padding: var(--space-2) var(--space-3);
+		background: var(--bg-tertiary);
+		border-radius: var(--radius-sm);
+		border: 1px solid var(--border-subtle);
+	}
+
+	.stat-label {
+		display: block;
+		font-size: 0.65rem;
+		color: var(--text-muted);
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+		margin-bottom: 2px;
+	}
+
+	.stat-value {
+		font-size: var(--text-sm);
+		font-weight: 600;
+		font-family: var(--font-mono);
+		color: var(--text-primary);
+	}
+
+	@media (max-width: 768px) {
+		.sidebar {
+			transform: translateX(-100%);
+			width: 280px;
+		}
+
+		.sidebar.open {
+			transform: translateX(0);
+		}
+	}
+</style>
+
+<script>
+	// Quick select buttons
+	document.querySelectorAll("[data-select]").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const action = (btn as HTMLElement).dataset.select;
+			const checkboxes = document.querySelectorAll<HTMLInputElement>(
+				'input[name="exchange"]',
+			);
+
+			checkboxes.forEach((cb) => {
+				if (action === "all") {
+					cb.checked = true;
+				} else if (action === "none") {
+					cb.checked = false;
+				} else if (action === "tier1") {
+					const chip = cb.closest<HTMLElement>(".exchange-chip");
+					cb.checked = chip?.dataset.tier === "1";
+				}
+			});
+		});
+	});
+
+	// Toggle groups (interval & period)
+	function setupToggleGroup(groupId: string) {
+		const group = document.getElementById(groupId);
+		if (!group) return;
+
+		group.querySelectorAll<HTMLButtonElement>(".toggle-btn").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				group.querySelectorAll(".toggle-btn").forEach((b) => b.classList.remove("active"));
+				btn.classList.add("active");
+			});
+		});
+	}
+
+	setupToggleGroup("interval-group");
+	setupToggleGroup("period-group");
+
+	// Custom period toggle
+	const customBtn = document.getElementById("custom-period-btn");
+	const customInput = document.getElementById("custom-period-input");
+
+	if (customBtn && customInput) {
+		const periodGroup = document.getElementById("period-group");
+		periodGroup?.querySelectorAll<HTMLButtonElement>(".toggle-btn").forEach((btn) => {
+			btn.addEventListener("click", () => {
+				if (btn.dataset.period === "custom") {
+					customInput.classList.remove("hidden");
+					(customInput as HTMLInputElement).focus();
+				} else {
+					customInput.classList.add("hidden");
+				}
+			});
+		});
+	}
+</script>
